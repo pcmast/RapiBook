@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="564.0" prefWidth="662.0" stylesheets="@Estilos.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.actividades.rapibookgit.controller.PantallaRegisterController">
+   <children>
+      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="513.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
+         <children>
+            <Label layoutX="215.0" layoutY="21.0" text="RapiBook">
+               <font>
+                  <Font size="50.0" />
+               </font>
+            </Label>
+            <Pane layoutX="62.0" layoutY="113.0" prefHeight="417.0" prefWidth="362.0" style="-fx-background-color: #FFFFFF;">
+               <children>
+                  <Label layoutX="122.0" layoutY="22.0" text="Registrate">
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nombre" layoutX="81.0" layoutY="61.0" promptText="Nombre:" />
+                  <TextField fx:id="correo" layoutX="81.0" layoutY="113.0" promptText="Correo:" />
+                  <PasswordField fx:id="contrasena" layoutX="81.0" layoutY="172.0" promptText="Contraseña:" />
+                  <PasswordField fx:id="repetirContra" layoutX="81.0" layoutY="224.0" promptText="Repetir Contraseña:" />
+                  <Label layoutX="87.0" layoutY="280.0" onMouseClicked="#iniciaSesion" text="¿Tienes una cuenta? Inicia Sesión" textFill="#3c00ff" />
+                  <Button layoutX="123.0" layoutY="315.0" mnemonicParsing="false" onAction="#registrarse" styleClass="button-login" text="Registrarse" />
+                  <Label fx:id="vacios" layoutX="95.0" layoutY="375.0" textFill="RED" />
+               </children>
+            </Pane>
+            <ImageView fx:id="logo" fitHeight="198.0" fitWidth="169.0" layoutX="441.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true" />
+            <TextField fx:id="administrador" layoutX="441.0" layoutY="407.0" promptText="¿ADMINISTRADOR?" />
+            <Label fx:id="claveAdmin" layoutX="479.0" layoutY="461.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
