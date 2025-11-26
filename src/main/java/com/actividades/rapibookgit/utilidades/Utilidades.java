@@ -1,4 +1,4 @@
-package com.actividades.rapibook.utilidades;
+package com.actividades.rapibookgit.utilidades;
 
 public class Utilidades {
 }

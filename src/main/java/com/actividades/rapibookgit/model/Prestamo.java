@@ -1,4 +1,4 @@
-package com.actividades.rapibook.model;
+package com.actividades.rapibookgit.model;
 
 public class Prestamo {
 }
