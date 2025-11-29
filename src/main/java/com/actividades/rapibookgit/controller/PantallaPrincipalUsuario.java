@@ -10,10 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -33,6 +30,7 @@ public class PantallaPrincipalUsuario {
 
     public TextField buscador;
     public Label nombreUsuario;
+    public Label noEncontroLibro;
 
     private ObservableList<Libro> libros = cargarLista();
 
@@ -81,7 +79,6 @@ public class PantallaPrincipalUsuario {
                 }
             }
         });
-
     }
 
     public ObservableList<Libro> cargarLista() {
@@ -180,6 +177,7 @@ public class PantallaPrincipalUsuario {
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("RapiBook");
             stage.show();
             stage.centerOnScreen();
             Stage ventanaActual = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
@@ -198,8 +196,10 @@ public class PantallaPrincipalUsuario {
 
         librosFiltrados.setPredicate(libro -> {
             if (filtro == null || filtro.isEmpty()) {
+                noEncontroLibro.setText("No existe ningun criterio con tu busqueda");
                 return true;
             }
+            noEncontroLibro.setText("");
             return libro.getTitulo().toLowerCase().contains(filtro);
         });
 
@@ -209,12 +209,26 @@ public class PantallaPrincipalUsuario {
 
 
     public void pedirPrestamo(MouseEvent mouseEvent) {
+        Libro libroSeleccionado = (Libro) listaLibros.getSelectionModel().getSelectedItem();
+
+        if (libroSeleccionado == null) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle("Atención");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Seleccione un libro primero.");
+            alerta.showAndWait();
+            return;
+        }
         try {
+
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaPedirPrestamo.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(loader.load());
+            PantallaControllerPedirPrestamo controller = loader.getController();
+            controller.setLibro(libroSeleccionado);
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("RapiBook");
             Stage parentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);
@@ -234,6 +248,7 @@ public class PantallaPrincipalUsuario {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("RapiBook");
             Stage parentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);

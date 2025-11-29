@@ -31,6 +31,7 @@ public class PantallaPrincipalAdministrador {
 
     public ListView listaLibros;
     public ImageView imagenReinicio;
+    public Label noEncontroLibro;
     private ObservableList<Libro> libros;
 
 
@@ -175,6 +176,7 @@ public class PantallaPrincipalAdministrador {
             scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("RapiBook");
             Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);
@@ -227,6 +229,7 @@ public class PantallaPrincipalAdministrador {
             Scene scene = new Scene(loader.load(), 640, 400);
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("RapiBook");
             stage.show();
             stage.centerOnScreen();
             Stage ventanaActual = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
@@ -288,6 +291,7 @@ public class PantallaPrincipalAdministrador {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("RapiBook");
             Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);
@@ -307,8 +311,10 @@ public class PantallaPrincipalAdministrador {
 
         librosFiltrados.setPredicate(libro -> {
             if (filtro == null || filtro.isEmpty()) {
+                noEncontroLibro.setText("No existe ningun criterio con tu busqueda");
                 return true;
             }
+            noEncontroLibro.setText("");
             return libro.getTitulo().toLowerCase().contains(filtro);
         });
 

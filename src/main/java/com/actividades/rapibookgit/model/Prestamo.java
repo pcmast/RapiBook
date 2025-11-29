@@ -1,5 +1,9 @@
 package com.actividades.rapibookgit.model;
 
+import com.actividades.rapibookgit.DAO.LibroDAO;
+
+import java.util.List;
+
 public class Prestamo {
 
     private int id;
@@ -15,6 +19,13 @@ public class Prestamo {
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
     }
+    public Prestamo(Usuario usuario, Libro libro, String fechaPrestamo, String fechaDevolucion) {
+        this.usuario = usuario;
+        this.libro = libro;
+        this.fechaPrestamo = fechaPrestamo;
+        this.fechaDevolucion = fechaDevolucion;
+    }
+
     public int getId() {
         return id;
     }
@@ -53,5 +64,21 @@ public class Prestamo {
 
     public void setFechaDevolucion(String fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
+    }
+
+    public void recogerLibro(){
+        List<Libro> libros = LibroDAO.todosLosLibros();
+        for (Libro libro1 : libros){
+            if (libro1.getISBN().equals(libro.getISBN())){
+                libro.setTitulo(libro1.getTitulo());
+            }
+        }
+    }
+    @Override
+    public String toString() {
+        recogerLibro();
+        return "libro = " + libro.getTitulo() +
+                ", fechaPrestamo= " + fechaPrestamo + '\'' +
+                ", fechaDevolucion= " + fechaDevolucion;
     }
 }

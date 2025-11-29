@@ -91,6 +91,7 @@
                         <Button layoutX="165.0" layoutY="529.0" mnemonicParsing="false" onMouseClicked="#pedirPrestamo" styleClass="button-login" text="Pedir Prestamo" />
                         <Button layoutX="495.0" layoutY="529.0" mnemonicParsing="false" onMouseClicked="#cerrarSesion" prefHeight="46.0" prefWidth="118.0" styleClass="button-login" text="Cerrar Sesión" />
                         <Button layoutX="319.0" layoutY="529.0" mnemonicParsing="false" onMouseClicked="#verPrestamos" styleClass="button-login" text="Ver mis Prestamos" />
+                        <Label fx:id="noEncontroLibro" layoutX="223.0" layoutY="286.0" />
                      </children>
             </AnchorPane>
           </content>

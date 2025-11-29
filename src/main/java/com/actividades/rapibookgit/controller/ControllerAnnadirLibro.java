@@ -154,6 +154,7 @@ public class ControllerAnnadirLibro {
             PantallaControllerAutores controllerAutores = loader.getController();
             controllerAutores.setControllerAnnadirLibro(this);
             controllerAutores.inicializarBotones();
+            stage.setTitle("RapiBook");
             stage.setScene(scene);
             stage.setResizable(false);
             Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();

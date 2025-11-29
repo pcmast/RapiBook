@@ -88,6 +88,7 @@ public class PantallaLoginController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = null;
             scene = new Scene(loader.load());
+            stage.setTitle("RapiBook");
             stage.setScene(scene);
             stage.show();
             stage.centerOnScreen();

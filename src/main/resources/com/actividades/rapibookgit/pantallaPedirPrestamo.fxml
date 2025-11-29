@@ -32,11 +32,46 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.actividades.rapibookgit.controller.PantallaControllerPedirPrestamo">
+<VBox prefHeight="479.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.actividades.rapibookgit.controller.PantallaControllerPedirPrestamo">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS" />
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+         <children>
+            <DatePicker fx:id="fechaPrestamo" layoutX="220.0" layoutY="370.0" promptText="Fecha a pedir:" />
+            <Label layoutX="185.0" layoutY="29.0" text="Pedir Prestamo libro">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="imagenPortada" fitHeight="150.0" fitWidth="200.0" layoutX="220.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="Titulo" layoutX="220.0" layoutY="224.0" text="Titulo:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="anno" layoutX="224.0" layoutY="260.0" text="Año publicación:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="editorial" layoutX="225.0" layoutY="291.0" text="Editorial">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="precio" layoutX="224.0" layoutY="321.0" text="Precio:">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="497.0" layoutY="359.0" mnemonicParsing="false" onAction="#pedirPrestamo" styleClass="button-login" stylesheets="@Estilos.css" text="Pedir prestamo" />
+         </children></AnchorPane>
   </children>
 </VBox>
