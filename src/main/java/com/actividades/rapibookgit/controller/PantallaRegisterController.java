@@ -123,7 +123,7 @@ public class PantallaRegisterController {
         Scene scene = null;
         try {
 
-            scene = new Scene(fxmlLoader.load());
+            scene = new Scene(fxmlLoader.load() ,720, 471);
             stage.setTitle("Rapibook");
             stage.setScene(scene);
             stage.show();

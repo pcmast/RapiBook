@@ -2,6 +2,7 @@ package com.actividades.rapibookgit.controller;
 
 import com.actividades.rapibookgit.DAO.UsuarioDAO;
 import com.actividades.rapibookgit.HelloApplication;
+import com.actividades.rapibookgit.baseDatos.ConnectionSelector;
 import com.actividades.rapibookgit.model.Usuario;
 import com.actividades.rapibookgit.utilidades.Utilidades;
 import javafx.event.ActionEvent;
@@ -9,9 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +21,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class PantallaLoginController {
+    public RadioButton h2;
+    public RadioButton mysql;
     @FXML
     private ImageView logo;
     public TextField correo;
@@ -33,6 +34,10 @@ public class PantallaLoginController {
         File imagenURL = new File("images/libro1.png");
         Image image = new Image(imagenURL.toURI().toString());
         logo.setImage(image);
+
+        ToggleGroup grupoDB = new ToggleGroup();
+        h2.setToggleGroup(grupoDB);
+        mysql.setToggleGroup(grupoDB);
     }
 
 
@@ -114,4 +119,13 @@ public class PantallaLoginController {
     }
 
 
+    public void usarH2(ActionEvent event) {
+        ConnectionSelector.useH2();
+
+    }
+
+    public void usarMySQL(ActionEvent event) {
+        ConnectionSelector.useMySQL();
+
+    }
 }

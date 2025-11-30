@@ -1,11 +1,16 @@
 package com.actividades.rapibookgit.model;
 
+import com.actividades.rapibookgit.DAO.PrestamoDAO;
+
+import java.util.List;
+
 public class Usuario {
 
     private String email;
     private String contrasena;
     private String nombre;
     private boolean administrador;
+    private List<Prestamo> list;
 
     public Usuario(String email, String contrasena, String nombre, boolean administrador) {
         this.email = email;
@@ -16,6 +21,16 @@ public class Usuario {
 
     public Usuario(String email) {
         this.email = email;
+    }
+
+    public List<Prestamo> getList() {
+        list = PrestamoDAO.todosPrestamosPorEmail(email);
+
+        return list;
+    }
+
+    public void setList(List<Prestamo> list) {
+        this.list = list;
     }
 
     public String getEmail() {

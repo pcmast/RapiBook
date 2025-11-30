@@ -1,6 +1,7 @@
 package com.actividades.rapibookgit.DAO;
 
 import com.actividades.rapibookgit.baseDatos.ConnectionDB;
+import com.actividades.rapibookgit.baseDatos.ConnectionSelector;
 import com.actividades.rapibookgit.controller.UsuarioActualController;
 import com.actividades.rapibookgit.model.Libro;
 import com.actividades.rapibookgit.model.Prestamo;
@@ -14,7 +15,7 @@ public class PrestamoDAO {
     private static final String SQL_OBTENER_POR_EMAIL = "SELECT * FROM prestamo WHERE email_usuario = ?";
 
     public static void insertarPrestamo(Prestamo prestamo) {
-        try (Connection con = ConnectionDB.getConnection();
+        try (Connection con = ConnectionSelector.getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERTAR)) {
 
 
@@ -35,7 +36,7 @@ public class PrestamoDAO {
 
     public static List<Prestamo> todosPrestamosPorEmail(String emailUsuario) {
         List<Prestamo> prestamos = new ArrayList<>();
-        Connection con = ConnectionDB.getConnection();
+        Connection con = ConnectionSelector.getConnection();
         try {
             PreparedStatement pstmt = con.prepareStatement(SQL_OBTENER_POR_EMAIL);
             pstmt.setString(1, emailUsuario);

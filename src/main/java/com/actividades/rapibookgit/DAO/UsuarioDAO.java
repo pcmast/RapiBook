@@ -1,6 +1,7 @@
 package com.actividades.rapibookgit.DAO;
 
 import com.actividades.rapibookgit.baseDatos.ConnectionDB;
+import com.actividades.rapibookgit.baseDatos.ConnectionSelector;
 import com.actividades.rapibookgit.model.Usuario;
 
 import java.sql.*;
@@ -13,7 +14,7 @@ public class UsuarioDAO {
 
     public static List<Usuario> todosUsuarios() {
         List<Usuario> usuarios = new ArrayList<>();
-        Connection con = ConnectionDB.getConnection();
+        Connection con = ConnectionSelector.getConnection();
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(SQL_ALL);
@@ -33,7 +34,7 @@ public class UsuarioDAO {
     }
 
     public static void insertarUsuarios(String email, String contrasena, String nombre, boolean administrador) {
-        Connection con = ConnectionDB.getConnection();
+        Connection con = ConnectionSelector.getConnection();
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(SQL_ANNADIR);

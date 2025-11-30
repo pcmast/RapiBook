@@ -1,6 +1,7 @@
 package com.actividades.rapibookgit.DAO;
 
 import com.actividades.rapibookgit.baseDatos.ConnectionDB;
+import com.actividades.rapibookgit.baseDatos.ConnectionSelector;
 import com.actividades.rapibookgit.model.Libro;
 
 import java.sql.*;
@@ -21,7 +22,7 @@ public class LibroDAO {
 
     public static void eliminarLibro(String isbn) {
         try {
-            Connection conn = ConnectionDB.getConnection();
+            Connection conn = ConnectionSelector.getConnection();
 
             PreparedStatement stmtLibroAutor = null;
             PreparedStatement stmtLibro = null;
@@ -48,7 +49,7 @@ public class LibroDAO {
 
     public static List<Libro> todosLosLibros() {
         List<Libro> libros = new ArrayList<>();
-        Connection con = ConnectionDB.getConnection();
+        Connection con = ConnectionSelector.getConnection();
 
         try (PreparedStatement stmt = con.prepareStatement(SQL_Todos);
              ResultSet rs = stmt.executeQuery()) {
@@ -75,7 +76,7 @@ public class LibroDAO {
 
     public static List<Libro> librosPorEditorial(String editorial) {
         List<Libro> libros = new ArrayList<>();
-        Connection con = ConnectionDB.getConnection();
+        Connection con = ConnectionSelector.getConnection();
 
         try {
             PreparedStatement stmt = con.prepareStatement(SQL_POR_EDITORIAL);
@@ -104,7 +105,7 @@ public class LibroDAO {
 
     public static List<Libro> librosGratis() {
         List<Libro> libros = new ArrayList<>();
-        Connection con = ConnectionDB.getConnection();
+        Connection con = ConnectionSelector.getConnection();
 
         try {
             PreparedStatement stmt = con.prepareStatement(SQL_Gratis);
@@ -134,7 +135,7 @@ public class LibroDAO {
 
     public static void insertarLibro(String ISBN, String titulo, String ano, String editorial, boolean esGratis, String portada, int precio) {
 
-        Connection con = ConnectionDB.getConnection();
+        Connection con = ConnectionSelector.getConnection();
 
         try {
             PreparedStatement stmt = con.prepareStatement(SQL_insertar);
@@ -155,7 +156,7 @@ public class LibroDAO {
     }
 
     public static Libro obtenerLibroPorISBN(String isbn) {
-        try (Connection con = ConnectionDB.getConnection();
+        try (Connection con = ConnectionSelector.getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_OBTENER_POR_ISBN)) {
 
             stmt.setString(1, isbn);

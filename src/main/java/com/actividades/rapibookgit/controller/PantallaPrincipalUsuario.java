@@ -174,7 +174,7 @@ public class PantallaPrincipalUsuario {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaLogin.fxml"));
             Stage stage = new Stage();
-            Scene scene = new Scene(loader.load(), 640, 400);
+            Scene scene = new Scene(loader.load(), 720, 471);
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("RapiBook");

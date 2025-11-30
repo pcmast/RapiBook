@@ -1,6 +1,7 @@
 package com.actividades.rapibookgit.DAO;
 
 import com.actividades.rapibookgit.baseDatos.ConnectionDB;
+import com.actividades.rapibookgit.baseDatos.ConnectionSelector;
 import com.actividades.rapibookgit.model.Autor;
 import com.actividades.rapibookgit.model.Libro;
 import com.actividades.rapibookgit.model.LibroAutor;
@@ -22,7 +23,7 @@ public class LibroAutorDAO {
         List<String> autores = new ArrayList<>();
 
         try {
-            Connection conn = ConnectionDB.getConnection();
+            Connection conn = ConnectionSelector.getConnection();
             PreparedStatement stmt = null;
             ResultSet rs = null;
 
@@ -48,7 +49,7 @@ public class LibroAutorDAO {
     }
 
     public static void insertarLibroAutor(int idAutor, String isbnLibro) {
-        try (Connection con = ConnectionDB.getConnection();
+        try (Connection con = ConnectionSelector.getConnection();
              PreparedStatement stmt = con.prepareStatement(SQL_INSERTAR)) {
 
             stmt.setInt(1, idAutor);
@@ -64,7 +65,7 @@ public class LibroAutorDAO {
     public static List<Libro> librosPorNombreAutor(String nombreAutor) {
         List<Libro> lista = new ArrayList<>();
 
-        try (Connection con = ConnectionDB.getConnection()) {
+        try (Connection con = ConnectionSelector.getConnection();) {
 
             PreparedStatement stmtAutor = con.prepareStatement(SQL_BUSCAR_AUTOR);
             stmtAutor.setString(1, nombreAutor);

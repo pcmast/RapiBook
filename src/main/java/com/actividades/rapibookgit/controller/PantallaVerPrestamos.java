@@ -17,7 +17,7 @@ public class PantallaVerPrestamos {
     private ObservableList<Prestamo> list = FXCollections.observableArrayList();;
 
     public void initialize() {
-        List<Prestamo> prestamos = PrestamoDAO.todosPrestamosPorEmail(UsuarioActualController.getInstance().getUsuario().getEmail());
+        List<Prestamo> prestamos = UsuarioActualController.getInstance().getUsuario().getList();
         list.setAll(prestamos);
         listaPrestamos.setItems(list);
         if (list.isEmpty()){
