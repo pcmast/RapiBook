@@ -12,6 +12,32 @@ public class AutorDAO {
     private static final String SQL_INSERTAR = "INSERT INTO autor(nombre, biografia) VALUES(?, ?)";
     private static final String SQL_TODOS = "SELECT * FROM autor";
     private static final String SQL_BUSCAR_ID = "SELECT * FROM autor WHERE id = ?";
+    private static final String SQL_ELIMINAR_AUTOR = "DELETE FROM autor WHERE id = ?";
+
+
+    public static void eliminarAutor(int id) {
+        try {
+            Connection conn = ConnectionSelector.getConnection();
+
+            PreparedStatement stmt = null;
+
+            try {
+                stmt = conn.prepareStatement(SQL_ELIMINAR_AUTOR);
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+
+
+            } finally {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 

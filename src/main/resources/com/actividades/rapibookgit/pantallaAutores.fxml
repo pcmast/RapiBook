@@ -51,8 +51,11 @@
             </Label>
             <ListView fx:id="listaAutores" layoutX="153.0" layoutY="105.0" prefHeight="258.0" prefWidth="334.0" />
             <Button fx:id="botonCrearAutor" layoutX="270.0" layoutY="380.0" mnemonicParsing="false" onAction="#crearAutor" styleClass="button-login" text="Crear autor" />
-            <ImageView fx:id="reiniciarLista" fitHeight="46.0" fitWidth="50.0" layoutX="173.0" layoutY="380.0" onMouseClicked="#reiniciar" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="reiniciarLista" fitHeight="46.0" fitWidth="50.0" layoutX="32.0" layoutY="105.0" onMouseClicked="#reiniciar" pickOnBounds="true" preserveRatio="true" />
             <Button fx:id="botonSeleccionar" layoutX="453.0" layoutY="380.0" mnemonicParsing="false" onAction="#SeleccionarAutor" styleClass="button-login" text="Seleccionar Autor" />
+            <Button fx:id="btnEliminarAutor" layoutX="112.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#eliminarAutor" styleClass="button-login" text="Eliminar Autor" />
+            <Button fx:id="botonSeleccionarDeUnLibro" layoutX="418.0" layoutY="380.0" mnemonicParsing="false" onAction="#SeleccionarAutorDeUnLibro" styleClass="button-login" text="Añadir autor a un libro" />
+            <Button fx:id="btnEliminarAutorDeUnLibro" layoutX="57.0" layoutY="380.0" mnemonicParsing="false" onMouseClicked="#eliminarAutorDeUnLibro" styleClass="button-login" text="Eliminar Autor de un libro" />
          </children>
     </AnchorPane>
   </children>

@@ -3,6 +3,7 @@ package com.actividades.rapibookgit.controller;
 import com.actividades.rapibookgit.DAO.LibroAutorDAO;
 import com.actividades.rapibookgit.DAO.LibroDAO;
 import com.actividades.rapibookgit.HelloApplication;
+import com.actividades.rapibookgit.model.Autor;
 import com.actividades.rapibookgit.model.Libro;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -33,8 +35,8 @@ public class PantallaPrincipalAdministrador {
     public ImageView imagenReinicio;
     public Label noEncontroLibro;
     private ObservableList<Libro> libros;
-
-
+    private Autor autorSeleccionado;
+    private PantallaControllerAutores pantallaControllerAutores;
     public void initialize() {
         File imagenURL = new File("images/reset.png");
         Image image = new Image(imagenURL.toURI().toString());
@@ -254,8 +256,17 @@ public class PantallaPrincipalAdministrador {
 
         Optional<ButtonType> respuesta = confirmacion.showAndWait();
         if (respuesta.isPresent() && respuesta.get() == ButtonType.OK) {
-
-            LibroDAO.eliminarLibro(libroSeleccionado.getISBN());
+            try {
+                LibroDAO.eliminarLibro(libroSeleccionado.getISBN());
+            }catch (Exception e){
+                if (e.getMessage().contains("Referential integrity constraint violation")) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("No se puede eliminar el libro");
+                    alert.setHeaderText("Este libro actualmente esta en un prestamo.");
+                    alert.showAndWait();
+                    return;
+                }
+            }
 
             listaLibros.getItems().remove(libroSeleccionado);
 
@@ -379,4 +390,73 @@ public class PantallaPrincipalAdministrador {
         listaLibros.setItems(FXCollections.observableArrayList(librosFiltrados));
     }
 
+    public void controlarAutor(MouseEvent mouseEvent) {
+        if (listaLibros.getSelectionModel().getSelectedItem() == null) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle("Atención");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Seleccione un Libro.");
+            alerta.showAndWait();
+            return;
+        }
+        Libro libro = (Libro) listaLibros.getSelectionModel().getSelectedItem();
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaAutores.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setResizable(false);
+            PantallaControllerAutores controller = loader.getController();
+            controller.listaAutoresParaAnnadirOEliminar(libro);
+            stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
+            Stage parentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(parentStage);
+            stage.show();
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void recibirAutorSeleccionado(Autor autor) {
+        this.autorSeleccionado = autor;
+    }
+
+    public void verAutores(MouseEvent mouseEvent) {
+        if (listaLibros.getSelectionModel().getSelectedItem() == null) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle("Atención");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Seleccione un Libro.");
+            alerta.showAndWait();
+            return;
+        }
+        Libro libro = (Libro) listaLibros.getSelectionModel().getSelectedItem();
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaAutores.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setResizable(false);
+            PantallaControllerAutores controller = loader.getController();
+            controller.listaDeUnLibro(libro);
+            stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
+            Stage parentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(parentStage);
+            stage.show();
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
 }

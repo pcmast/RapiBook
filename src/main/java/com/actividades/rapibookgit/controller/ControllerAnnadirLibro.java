@@ -20,6 +20,7 @@ import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.util.List;
+
 import com.actividades.rapibookgit.utilidades.Utilidades;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -42,7 +43,7 @@ public class ControllerAnnadirLibro {
     private Libro libroActual;
 
 
-    public void initialize(){
+    public void initialize() {
         File file = new File("images/libro2.png");
         Image image = new Image(file.toURI().toString());
         imagen.setImage(image);
@@ -83,21 +84,22 @@ public class ControllerAnnadirLibro {
                 camposVacios.setText("El precio no puede ser negativo");
                 return;
             }
-        libroActual.setTitulo(titulo.getText());
-        libroActual.setAno(anno.getText());
-        libroActual.setEditorial(editorialNombre.getText());
-        libroActual.setPrecio(Integer.parseInt(precio.getText()));
-        libroActual.setPortada(ruta);
+            libroActual.setTitulo(titulo.getText());
+            libroActual.setAno(anno.getText());
+            libroActual.setEditorial(editorialNombre.getText());
+            libroActual.setPrecio(Integer.parseInt(precio.getText()));
+            libroActual.setPortada(ruta);
+            LibroDAO.actualizarLibro(libroActual);
 
-        LibroDAO.actualizarLibro(libroActual);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
 
-        Alert exito = new Alert(Alert.AlertType.INFORMATION);
-        exito.setTitle("Actualización exitosa");
-        exito.setHeaderText(null);
-        exito.setContentText("El libro fue actualizado correctamente.");
-        exito.showAndWait();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+
+            Alert exito = new Alert(Alert.AlertType.INFORMATION);
+            exito.setTitle("Actualización exitosa");
+            exito.setHeaderText(null);
+            exito.setContentText("El libro fue actualizado correctamente.");
+            exito.showAndWait();
         } catch (NumberFormatException e) {
             camposVacios.setText("Introduce un precio válido (solo números)");
         }
@@ -106,11 +108,11 @@ public class ControllerAnnadirLibro {
 
     public void annadirLibro(MouseEvent mouseEvent) {
         boolean existe = true;
-        if (titulo.getText().isEmpty() || anno.getText().isEmpty() || editorialNombre.getText().isEmpty() || precio.getText().isEmpty()){
+        if (titulo.getText().isEmpty() || anno.getText().isEmpty() || editorialNombre.getText().isEmpty() || precio.getText().isEmpty()) {
             camposVacios.setText("Debes introducir todos los datos");
-        }else if (anno.getText().length() > 4){
+        } else if (anno.getText().length() > 4) {
             camposVacios.setText("Introduce una fecha valida");
-        }else {
+        } else {
             int precioLibro;
             try {
                 precioLibro = Integer.parseInt(precio.getText());
@@ -125,41 +127,41 @@ public class ControllerAnnadirLibro {
 
 
             String isbn = ISBN.getText();
-        if (autorSeleccionado != null) {
-            if (Utilidades.validarISBN(isbn)) {
-                List<Libro> libros = LibroDAO.todosLosLibros();
-                for (Libro libro : libros) {
-                    if (libro.getISBN().equals(isbn)) {
-                        camposVacios.setText("Este libro ya existe en el sistema");
-                        existe = false;
+            if (autorSeleccionado != null) {
+                if (Utilidades.validarISBN(isbn)) {
+                    List<Libro> libros = LibroDAO.todosLosLibros();
+                    for (Libro libro : libros) {
+                        if (libro.getISBN().equals(isbn)) {
+                            camposVacios.setText("Este libro ya existe en el sistema");
+                            existe = false;
+                        }
+
                     }
 
-                }
-
-                if (existe) {
-                    if (this.ruta == null) {
-                        File file = new File("images/libro2.png");
-                        ruta = file.getAbsolutePath();
+                    if (existe) {
+                        if (this.ruta == null) {
+                            File file = new File("images/libro2.png");
+                            ruta = file.getAbsolutePath();
+                        }
+                        int precio = Integer.parseInt(this.precio.getText());
+                        if (precio >= 0) {
+                            LibroDAO.insertarLibro(isbn, titulo.getText(), anno.getText(), editorialNombre.getText(), true, this.ruta, precio);
+                        } else {
+                            LibroDAO.insertarLibro(isbn, titulo.getText(), anno.getText(), editorialNombre.getText(), false, this.ruta, precio);
+                        }
+                        if (autorSeleccionado != null) {
+                            int idAutor = autorSeleccionado.getId();
+                            LibroAutorDAO.insertarLibroAutor(idAutor, isbn);
+                        }
+                        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                        stage.close();
                     }
-                    int precio = Integer.parseInt(this.precio.getText());
-                    if (precio >= 0) {
-                        LibroDAO.insertarLibro(isbn, titulo.getText(), anno.getText(), editorialNombre.getText(), true, this.ruta, precio);
-                    } else {
-                        LibroDAO.insertarLibro(isbn, titulo.getText(), anno.getText(), editorialNombre.getText(), false, this.ruta, precio);
-                    }
-                    if (autorSeleccionado != null) {
-                        int idAutor = autorSeleccionado.getId();
-                        LibroAutorDAO.insertarLibroAutor(idAutor, isbn);
-                    }
-                    Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-                    stage.close();
+                } else {
+                    camposVacios.setText("Debes introducir un ISBN valido");
                 }
             } else {
-                camposVacios.setText("Debes introducir un ISBN valido");
+                camposVacios.setText("Debes seleccionar un autor");
             }
-        }else {
-            camposVacios.setText("Debes seleccionar un autor");
-        }
         }
     }
 
@@ -193,7 +195,7 @@ public class ControllerAnnadirLibro {
                 }
 
                 out.flush();
-                ruta ="images/" + imagenSeleccionada.getName();
+                ruta = "images/" + imagenSeleccionada.getName();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -212,7 +214,6 @@ public class ControllerAnnadirLibro {
         this.autorSeleccionado = autor;
         nombreAutor.setText(autor.getNombre());
     }
-
 
 
     public void annadirAutor(ActionEvent event) {

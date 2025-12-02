@@ -14,10 +14,32 @@ public class LibroAutorDAO {
     private static final String SQL_BUSCAR_AUTOR = "SELECT id FROM autor WHERE nombre = ?";
     private static final String SQL_LIBROS_POR_AUTOR = "SELECT ISBN_autor FROM libro_autor WHERE id_autor = ?";
     private static final String SQL_INSERTAR = "INSERT INTO libroautor (id_autor, ISBN_libro) VALUES (?, ?)";
-    private static final String SQL_AUTORES_POR_ISBN =
-            "SELECT a.nombre FROM autor a " +
-                    "JOIN libroautor la ON a.id = la.id_autor " +
-                    "WHERE la.ISBN_libro = ?";
+    private static final String SQL_AUTORES_POR_ISBN = "SELECT a.nombre FROM autor a " + "JOIN libroautor la ON a.id = la.id_autor " + "WHERE la.ISBN_libro = ?";
+    private static final String SQL_ELIMINAR_LIBRO_AUTOR = "DELETE FROM libroautor WHERE ISBN_libro = ? and id_autor = ?";
+
+
+    public static void eliminarLibroAutor(int id, String isbn) {
+        try {
+            Connection conn = ConnectionSelector.getConnection();
+            PreparedStatement stmtLibroAutor = null;
+
+
+            try {
+                stmtLibroAutor = conn.prepareStatement(SQL_ELIMINAR_LIBRO_AUTOR);
+                stmtLibroAutor.setString(1, isbn);
+                stmtLibroAutor.setInt(2, id);
+                stmtLibroAutor.executeUpdate();
+
+
+            } finally {
+                if (stmtLibroAutor != null) stmtLibroAutor.close();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static List<String> obtenerAutorPorISBN(String isbn) {
         List<String> autores = new ArrayList<>();
