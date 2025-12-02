@@ -26,7 +26,6 @@ public class PantallaControllerAutores {
     public Button botonSeleccionar;
     public Button botonCrearAutor;
     private ObservableList<Autor> list;
-
     private ControllerAnnadirLibro controllerAnnadirLibro;
 
     public void setControllerAnnadirLibro(ControllerAnnadirLibro controller) {
@@ -43,6 +42,7 @@ public class PantallaControllerAutores {
         Image image = new Image(file.toURI().toString());
         reiniciarLista.setImage(image);
     }
+
 
 
     public void crearAutor(ActionEvent event) {
@@ -104,5 +104,6 @@ public class PantallaControllerAutores {
             stageActual.close();
         }
     }
+
 
 }

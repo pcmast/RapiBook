@@ -18,7 +18,26 @@ public class LibroDAO {
     private static final String SQL_ELIMINAR_LIBRO_AUTOR = "DELETE FROM libroautor WHERE ISBN_libro = ?";
     private static final String SQL_ELIMINAR_LIBRO = "DELETE FROM libro WHERE ISBN = ?";
     private static final String SQL_OBTENER_POR_ISBN = "SELECT * FROM libro WHERE ISBN = ?;";
+    private static final String SQL_ACTUALIZAR = "UPDATE libro SET titulo = ?, ano = ?, editorial = ?, esGratis = ?, portada = ?, precio = ? WHERE ISBN = ?";
 
+    public static void actualizarLibro(Libro libro) {
+        try (Connection con = ConnectionSelector.getConnection();
+             PreparedStatement ps = con.prepareStatement(SQL_ACTUALIZAR)) {
+
+            ps.setString(1, libro.getTitulo());
+            ps.setString(2, libro.getAno());
+            ps.setString(3, libro.getEditorial());
+            ps.setBoolean(4, libro.isEsGratis());
+            ps.setString(5, libro.getPortada());
+            ps.setInt(6, libro.getPrecio());
+            ps.setString(7, libro.getISBN());
+
+            int filasActualizadas = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void eliminarLibro(String isbn) {
         try {

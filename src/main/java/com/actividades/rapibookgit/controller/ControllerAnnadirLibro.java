@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -33,15 +35,73 @@ public class ControllerAnnadirLibro {
     public TextField precio;
     public Label camposVacios;
     public Label nombreAutor;
+    public Button actualizarLibrobtn;
+    public Button annadirLibrobtn;
     private Autor autorSeleccionado;
     private String ruta;
+    private Libro libroActual;
+
 
     public void initialize(){
         File file = new File("images/libro2.png");
         Image image = new Image(file.toURI().toString());
         imagen.setImage(image);
+        actualizarLibrobtn.setVisible(false);
+        actualizarLibrobtn.setDisable(true);
+        annadirLibrobtn.setDisable(false);
+        annadirLibrobtn.setVisible(true);
     }
 
+    public void recibirLibro(Libro libro) {
+        actualizarLibrobtn.setVisible(true);
+        actualizarLibrobtn.setDisable(false);
+        annadirLibrobtn.setDisable(true);
+        annadirLibrobtn.setVisible(false);
+
+        this.libroActual = libro;
+
+        ISBN.setText(libro.getISBN());
+        ISBN.setDisable(true);
+        titulo.setText(libro.getTitulo());
+        anno.setText(libro.getAno());
+        editorialNombre.setText(libro.getEditorial());
+        precio.setText(String.valueOf(libro.getPrecio()));
+
+        File file = new File(libro.getPortada());
+        if (file.exists()) {
+            Image image = new Image(file.toURI().toString());
+            imagen.setImage(image);
+            ruta = libro.getPortada();
+        }
+    }
+
+
+    public void actualizarLibro(ActionEvent event) {
+        try {
+            int precioLibro = Integer.parseInt(precio.getText());
+            if (precioLibro < 0) {
+                camposVacios.setText("El precio no puede ser negativo");
+                return;
+            }
+        libroActual.setTitulo(titulo.getText());
+        libroActual.setAno(anno.getText());
+        libroActual.setEditorial(editorialNombre.getText());
+        libroActual.setPrecio(Integer.parseInt(precio.getText()));
+        libroActual.setPortada(ruta);
+
+        LibroDAO.actualizarLibro(libroActual);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
+
+        Alert exito = new Alert(Alert.AlertType.INFORMATION);
+        exito.setTitle("Actualización exitosa");
+        exito.setHeaderText(null);
+        exito.setContentText("El libro fue actualizado correctamente.");
+        exito.showAndWait();
+        } catch (NumberFormatException e) {
+            camposVacios.setText("Introduce un precio válido (solo números)");
+        }
+    }
 
 
     public void annadirLibro(MouseEvent mouseEvent) {
@@ -51,6 +111,18 @@ public class ControllerAnnadirLibro {
         }else if (anno.getText().length() > 4){
             camposVacios.setText("Introduce una fecha valida");
         }else {
+            int precioLibro;
+            try {
+                precioLibro = Integer.parseInt(precio.getText());
+                if (precioLibro < 0) {
+                    camposVacios.setText("El precio no puede ser negativo");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                camposVacios.setText("Introduce un precio válido (solo números)");
+                return;
+            }
+
 
             String isbn = ISBN.getText();
         if (autorSeleccionado != null) {
@@ -69,7 +141,6 @@ public class ControllerAnnadirLibro {
                         File file = new File("images/libro2.png");
                         ruta = file.getAbsolutePath();
                     }
-
                     int precio = Integer.parseInt(this.precio.getText());
                     if (precio >= 0) {
                         LibroDAO.insertarLibro(isbn, titulo.getText(), anno.getText(), editorialNombre.getText(), true, this.ruta, precio);
@@ -94,7 +165,6 @@ public class ControllerAnnadirLibro {
 
 
     public void seleccionarImagen(MouseEvent mouseEvent) {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
         fileChooser.getExtensionFilters().addAll(
@@ -106,14 +176,10 @@ public class ControllerAnnadirLibro {
         );
 
         if (imagenSeleccionada != null) {
-
-
             File carpetaDestino = new File("images");
             if (!carpetaDestino.exists()) {
                 carpetaDestino.mkdirs();
             }
-
-
             File archivoDestino = new File(carpetaDestino, imagenSeleccionada.getName());
 
             try (InputStream in = new FileInputStream(imagenSeleccionada);
@@ -132,9 +198,13 @@ public class ControllerAnnadirLibro {
                 e.printStackTrace();
             }
         }
-        File file = new File(ruta);
-        Image image = new Image(file.toURI().toString());
-        imagen.setImage(image);
+        if (ruta != null) {
+            File file = new File(ruta);
+            Image image = new Image(file.toURI().toString());
+            imagen.setImage(image);
+        } else {
+            camposVacios.setText("No se seleccionó ninguna imagen");
+        }
     }
 
 
@@ -156,6 +226,9 @@ public class ControllerAnnadirLibro {
             controllerAutores.inicializarBotones();
             stage.setTitle("RapiBook");
             stage.setScene(scene);
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             stage.setResizable(false);
             Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
@@ -167,4 +240,6 @@ public class ControllerAnnadirLibro {
         }
 
     }
+
+
 }

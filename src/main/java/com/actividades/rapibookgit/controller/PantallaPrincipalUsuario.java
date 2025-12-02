@@ -20,6 +20,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import com.actividades.rapibookgit.DAO.LibroAutorDAO;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -90,7 +91,11 @@ public class PantallaPrincipalUsuario {
         List<Libro> lista = LibroDAO.todosLosLibros(); // Trae todos
         lista.removeIf(libro -> libro.getPrecio() > 0); // Solo los gratis
         libros = FXCollections.observableArrayList(lista);
-
+        if (libros.isEmpty()) {
+            noEncontroLibro.setText("No se encontraron libros gratuitos");
+        } else {
+            noEncontroLibro.setText("");
+        }
         listaLibros.setItems(libros);
 
         listaLibros.setCellFactory(param -> new ListCell<Libro>() {
@@ -131,7 +136,11 @@ public class PantallaPrincipalUsuario {
         List<Libro> lista = LibroDAO.todosLosLibros(); // Trae todos
         lista.removeIf(libro -> libro.getPrecio() <= 0); // Solo los de pago
         libros = FXCollections.observableArrayList(lista);
-
+        if (libros.isEmpty()) {
+            noEncontroLibro.setText("No se encontraron libros de pago");
+        } else {
+            noEncontroLibro.setText("");
+        }
         listaLibros.setItems(libros);
 
         listaLibros.setCellFactory(param -> new ListCell<Libro>() {
@@ -177,6 +186,9 @@ public class PantallaPrincipalUsuario {
             Scene scene = new Scene(loader.load(), 720, 471);
             stage.setScene(scene);
             stage.setResizable(false);
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             stage.setTitle("RapiBook");
             stage.show();
             stage.centerOnScreen();
@@ -188,23 +200,27 @@ public class PantallaPrincipalUsuario {
 
     }
 
-    public void buscarLibro(KeyEvent keyEvent) {
-        TextField textField = (TextField) keyEvent.getSource();
+    public void buscarLibro(KeyEvent event) {
+        TextField textField = (TextField) event.getSource();
         String filtro = textField.getText().toLowerCase();
 
         FilteredList<Libro> librosFiltrados = new FilteredList<>(libros, libro -> true);
 
-        librosFiltrados.setPredicate(libro -> {
-            if (filtro == null || filtro.isEmpty()) {
-                noEncontroLibro.setText("No existe ningun criterio con tu busqueda");
-                return true;
-            }
+        if (filtro == null || filtro.isEmpty()) {
+            listaLibros.setItems(libros);
             noEncontroLibro.setText("");
-            return libro.getTitulo().toLowerCase().contains(filtro);
-        });
+            return;
+        }
+
+        librosFiltrados.setPredicate(libro -> libro.getTitulo().toLowerCase().contains(filtro));
+
+        if (librosFiltrados.isEmpty()) {
+            noEncontroLibro.setText("No se encontraron libros con ese criterio");
+        } else {
+            noEncontroLibro.setText("");
+        }
 
         listaLibros.setItems(FXCollections.observableArrayList(librosFiltrados));
-
     }
 
 
@@ -229,6 +245,9 @@ public class PantallaPrincipalUsuario {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             Stage parentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);
@@ -249,6 +268,9 @@ public class PantallaPrincipalUsuario {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             Stage parentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);

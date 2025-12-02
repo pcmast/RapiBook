@@ -14,6 +14,9 @@ public class AutorDAO {
     private static final String SQL_BUSCAR_ID = "SELECT * FROM autor WHERE id = ?";
 
 
+
+
+
     public static void insertarAutor(String nombre, String biografia) {
         Connection con = ConnectionSelector.getConnection();
         try {

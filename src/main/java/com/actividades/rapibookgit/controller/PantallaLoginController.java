@@ -54,6 +54,9 @@ public class PantallaLoginController {
             Scene scene = null;
             scene = new Scene(loader.load());
             Stage stage = new Stage();
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             stage.setTitle("RapiBook");
             stage.setScene(scene);
             stage.show();
@@ -94,6 +97,9 @@ public class PantallaLoginController {
             Scene scene = null;
             scene = new Scene(loader.load());
             stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             stage.setScene(scene);
             stage.show();
             stage.centerOnScreen();
@@ -111,6 +117,9 @@ public class PantallaLoginController {
             stage.setTitle("RapiBook");
             scene = new Scene(loader.load(), 1100, 600);
             stage.setScene(scene);
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             stage.centerOnScreen();
             stage.show();
         } catch (IOException e) {

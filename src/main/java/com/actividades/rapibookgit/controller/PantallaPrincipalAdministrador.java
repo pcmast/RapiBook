@@ -86,9 +86,14 @@ public class PantallaPrincipalAdministrador {
 
 
     public void gratuitos(ActionEvent event) {
-        List<Libro> lista = LibroDAO.todosLosLibros(); // Trae todos
-        lista.removeIf(libro -> libro.getPrecio() > 0); // Solo los gratis
+        List<Libro> lista = LibroDAO.todosLosLibros();
+        lista.removeIf(libro -> libro.getPrecio() > 0);
         libros = FXCollections.observableArrayList(lista);
+        if (libros.isEmpty()) {
+            noEncontroLibro.setText("No se encontraron libros gratuitos");
+        } else {
+            noEncontroLibro.setText("");
+        }
 
         listaLibros.setItems(libros);
 
@@ -127,9 +132,14 @@ public class PantallaPrincipalAdministrador {
     }
 
     public void dePago(ActionEvent event) {
-        List<Libro> lista = LibroDAO.todosLosLibros(); // Trae todos
-        lista.removeIf(libro -> libro.getPrecio() <= 0); // Solo los de pago
+        List<Libro> lista = LibroDAO.todosLosLibros();
+        lista.removeIf(libro -> libro.getPrecio() <= 0);
         libros = FXCollections.observableArrayList(lista);
+        if (libros.isEmpty()) {
+            noEncontroLibro.setText("No se encontraron libros de pago");
+        } else {
+            noEncontroLibro.setText("");
+        }
 
         listaLibros.setItems(libros);
 
@@ -177,6 +187,9 @@ public class PantallaPrincipalAdministrador {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);
@@ -185,6 +198,40 @@ public class PantallaPrincipalAdministrador {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    public void actualizarLibro(ActionEvent event) {
+        Libro libroSeleccionado = (Libro) listaLibros.getSelectionModel().getSelectedItem();
+        if (libroSeleccionado == null) {
+            Alert alerta = new Alert(Alert.AlertType.WARNING);
+            alerta.setTitle("Atención");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Seleccione un libro para Actualizar.");
+            alerta.showAndWait();
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaAñadirLibro.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(loader.load(), 720, 471);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            ControllerAnnadirLibro controller = loader.getController();
+            controller.recibirLibro(libroSeleccionado);
+            stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
+            Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(parentStage);
+            stage.show();
+            stage.centerOnScreen();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        listaLibros.refresh();
 
     }
 
@@ -230,6 +277,9 @@ public class PantallaPrincipalAdministrador {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             stage.show();
             stage.centerOnScreen();
             Stage ventanaActual = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
@@ -243,7 +293,7 @@ public class PantallaPrincipalAdministrador {
         List<Libro> lista = LibroDAO.todosLosLibros();
 
         libros = FXCollections.observableArrayList(lista);
-
+        noEncontroLibro.setText("");
         listaLibros.setItems(libros);
 
         listaLibros.setCellFactory(param -> new ListCell<Libro>() {
@@ -292,6 +342,9 @@ public class PantallaPrincipalAdministrador {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.setTitle("RapiBook");
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(parentStage);
@@ -309,16 +362,21 @@ public class PantallaPrincipalAdministrador {
 
         FilteredList<Libro> librosFiltrados = new FilteredList<>(libros, libro -> true);
 
-        librosFiltrados.setPredicate(libro -> {
-            if (filtro == null || filtro.isEmpty()) {
-                noEncontroLibro.setText("No existe ningun criterio con tu busqueda");
-                return true;
-            }
+        if (filtro == null || filtro.isEmpty()) {
+            listaLibros.setItems(libros);
             noEncontroLibro.setText("");
-            return libro.getTitulo().toLowerCase().contains(filtro);
-        });
+            return;
+        }
+
+        librosFiltrados.setPredicate(libro -> libro.getTitulo().toLowerCase().contains(filtro));
+
+        if (librosFiltrados.isEmpty()) {
+            noEncontroLibro.setText("No se encontraron libros con ese criterio");
+        } else {
+            noEncontroLibro.setText("");
+        }
 
         listaLibros.setItems(FXCollections.observableArrayList(librosFiltrados));
-
     }
+
 }

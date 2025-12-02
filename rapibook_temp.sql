@@ -1,0 +1,40 @@
+CREATE TABLE IF NOT EXISTS autor (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(255) NOT NULL,
+    biografia VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS libro (
+    ISBN VARCHAR(17) PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    ano VARCHAR(4) NOT NULL,
+    editorial VARCHAR(255) NOT NULL,
+    esGratis BOOLEAN NOT NULL,
+    portada VARCHAR(255) NOT NULL,
+    precio INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS usuario (
+    email VARCHAR(255) PRIMARY KEY,
+    contrasena VARCHAR(255) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    administrador BOOLEAN NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS libroautor (
+    ISBN_libro VARCHAR(17) NOT NULL,
+    id_autor INT NOT NULL,
+    PRIMARY KEY (ISBN_libro, id_autor),
+    FOREIGN KEY (ISBN_libro) REFERENCES libro(ISBN),
+    FOREIGN KEY (id_autor) REFERENCES autor(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS prestamo (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    email_usuario VARCHAR(255) NOT NULL,
+    ISBN_libro VARCHAR(17) NOT NULL,
+    fecha_prestamo DATE NOT NULL,
+    fecha_devolucion DATE,
+    FOREIGN KEY (ISBN_libro) REFERENCES libro(ISBN),
+    FOREIGN KEY (email_usuario) REFERENCES usuario(email) ON DELETE CASCADE ON UPDATE CASCADE
+);

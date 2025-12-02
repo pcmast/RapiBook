@@ -3,8 +3,10 @@ package com.actividades.rapibookgit;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
@@ -13,6 +15,9 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("pantallaLogin.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 720, 471);
         stage.setTitle("RapiBook");
+        File imagenURL = new File("images/biblioteca.png");
+        Image image = new Image(imagenURL.toURI().toString());
+        stage.getIcons().add(image);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

@@ -34,7 +34,7 @@ public class PantallaRegisterController {
     public Label vacios;
     public Label claveAdmin;
 
-    public void initialize(){
+    public void initialize() {
         File imagenURL = new File("images/libro1.png");
         Image image = new Image(imagenURL.toURI().toString());
         logo.setImage(image);
@@ -52,50 +52,52 @@ public class PantallaRegisterController {
         boolean existe = false;
         boolean avanzar = false;
         boolean iniciadoSesion = false;
-        if (Utilidades.validarCorreo(correo)){
-        if (nombre.isEmpty() || correo.isEmpty() || contra.isEmpty() || repContra.isEmpty()){
-        vacios.setText("Debes introducir todos los datos");
-        }else {
-            if (!contra.equals(repContra)){
-                vacios.setText("Las contraseñas no coinciden");
-            }else {
-            avanzar = true;
-            }
-        }
-        if (avanzar) {
-            List<Usuario> list = UsuarioDAO.todosUsuarios();
-            boolean claveCorrecta = false;
-            for (Usuario usuario : list) {
-                if (usuario.getEmail().equals(correo)) {
-                    existe = true;
-                }
-            }
-            String contraHasheada = Utilidades.hashPassword(contra);
-            if (!admin.isEmpty()) {
-                if (admin.equals(claveXML)) {
-                    claveCorrecta = true;
-                } else {
-                    claveAdmin.setText("La clave no coincide");
-                }
-            }
-
-            if (existe) {
-                vacios.setText("Usuario ya existen en el sistema");
+        if (Utilidades.validarCorreo(correo)) {
+            if (nombre.isEmpty() || correo.isEmpty() || contra.isEmpty() || repContra.isEmpty()) {
+                vacios.setText("Debes introducir todos los datos");
             } else {
-                vacios.setText("");
-                if (!claveCorrecta) {
-                    UsuarioDAO.insertarUsuarios(correo, contraHasheada, nombre, false);
-                    iniciadoSesion = true;
+                if (!contra.equals(repContra)) {
+                    vacios.setText("Las contraseñas no coinciden");
                 } else {
-                    UsuarioDAO.insertarUsuarios(correo, contraHasheada, nombre, true);
-                    iniciadoSesion = true;
+                    avanzar = true;
                 }
-
             }
-        }
-        }else {
+            if (avanzar) {
+                List<Usuario> list = UsuarioDAO.todosUsuarios();
+                boolean claveCorrecta = false;
+                for (Usuario usuario : list) {
+                    if (usuario.getEmail().equals(correo)) {
+                        existe = true;
+                    }
+                }
+                String contraHasheada = Utilidades.hashPassword(contra);
+                if (!admin.isEmpty()) {
+                    if (admin.equals(claveXML)) {
+                        claveCorrecta = true;
+                    } else {
+                        claveAdmin.setText("La clave no coincide");
+                    }
+                }
+                if (existe) {
+                    vacios.setText("Usuario ya existen en el sistema");
+                } else {
+                    vacios.setText("");
+                    if (claveCorrecta) {
+                        UsuarioDAO.insertarUsuarios(correo, contraHasheada, nombre, true);
+                        iniciadoSesion = true;
+                    } else if (!admin.isEmpty()) {
+                        claveAdmin.setText("La clave no coincide");
+                    } else {
+                        UsuarioDAO.insertarUsuarios(correo, contraHasheada, nombre, false);
+                        iniciadoSesion = true;
+                    }
+
+                }
+            }
+        } else {
             vacios.setText("Introduce un correo valido");
         }
+
         if (iniciadoSesion) {
             Stage currentStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             currentStage.close();
@@ -106,6 +108,9 @@ public class PantallaRegisterController {
                 scene = new Scene(fxmlLoader.load());
                 stage.setTitle("RapiBook");
                 stage.setScene(scene);
+                File imagenURL = new File("images/biblioteca.png");
+                Image image = new Image(imagenURL.toURI().toString());
+                stage.getIcons().add(image);
                 stage.show();
 
             } catch (IOException e) {
@@ -123,9 +128,12 @@ public class PantallaRegisterController {
         Scene scene = null;
         try {
 
-            scene = new Scene(fxmlLoader.load() ,720, 471);
+            scene = new Scene(fxmlLoader.load(), 720, 471);
             stage.setTitle("Rapibook");
             stage.setScene(scene);
+            File imagenURL = new File("images/biblioteca.png");
+            Image image = new Image(imagenURL.toURI().toString());
+            stage.getIcons().add(image);
             stage.show();
 
         } catch (IOException e) {
