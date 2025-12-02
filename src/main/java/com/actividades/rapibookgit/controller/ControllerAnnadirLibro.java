@@ -6,6 +6,7 @@ import com.actividades.rapibookgit.HelloApplication;
 import com.actividades.rapibookgit.model.Autor;
 import com.actividades.rapibookgit.model.Libro;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -28,21 +29,35 @@ import javafx.stage.Stage;
 public class ControllerAnnadirLibro {
 
 
-    public TextField ISBN;
-    public ImageView imagen;
-    public TextField titulo;
-    public TextField anno;
-    public TextField editorialNombre;
-    public TextField precio;
-    public Label camposVacios;
-    public Label nombreAutor;
-    public Button actualizarLibrobtn;
-    public Button annadirLibrobtn;
+    @FXML
+    private TextField ISBN;
+    @FXML
+    private ImageView imagen;
+    @FXML
+    private TextField titulo;
+    @FXML
+    private TextField anno;
+    @FXML
+    private TextField editorialNombre;
+    @FXML
+    private TextField precio;
+    @FXML
+    private Label camposVacios;
+    @FXML
+    private Label nombreAutor;
+    @FXML
+    private Button actualizarLibrobtn;
+    @FXML
+    private Button annadirLibrobtn;
     private Autor autorSeleccionado;
     private String ruta;
     private Libro libroActual;
 
-
+    /*
+    * Metodo que al inicilizar la pantalla coge una imagen y la asigna a la imagen de la pantalla y desabilita
+    * Botones que no son necesarios al principio del programa
+    *
+    * */
     public void initialize() {
         File file = new File("images/libro2.png");
         Image image = new Image(file.toURI().toString());
@@ -52,7 +67,9 @@ public class ControllerAnnadirLibro {
         annadirLibrobtn.setDisable(false);
         annadirLibrobtn.setVisible(true);
     }
-
+    /*
+     *Metodo que es llamado de otra pantalla y recibe un libro y lo asigna a un libro de esta clase
+     * */
     public void recibirLibro(Libro libro) {
         actualizarLibrobtn.setVisible(true);
         actualizarLibrobtn.setDisable(false);
@@ -76,7 +93,10 @@ public class ControllerAnnadirLibro {
         }
     }
 
-
+    /*
+     *Metodo que actualiza la informacion basica de un libro como podria ser el titulo año etc
+     * luego de actualizar el metodo cierra esta ventana
+     * */
     public void actualizarLibro(ActionEvent event) {
         try {
             int precioLibro = Integer.parseInt(precio.getText());
@@ -105,7 +125,11 @@ public class ControllerAnnadirLibro {
         }
     }
 
-
+    /*
+     * Metodo que añade un libro con todos sus datos y un autor y luego se encarga de registrarlo en la base de datos
+     * Tiene comprobaciones de todo tipo por si no se escriben datos.
+     * Al añadir un libro cierra esta ventana
+     * */
     public void annadirLibro(MouseEvent mouseEvent) {
         boolean existe = true;
         if (titulo.getText().isEmpty() || anno.getText().isEmpty() || editorialNombre.getText().isEmpty() || precio.getText().isEmpty()) {
@@ -165,7 +189,11 @@ public class ControllerAnnadirLibro {
         }
     }
 
-
+    /*
+     * Metodo que usa la clase FileChooser para seleccionar una imagen que quiera el usuario para un libro.
+     * Luego pega esa imagen en la carpeta del proyecto images
+     *
+     * */
     public void seleccionarImagen(MouseEvent mouseEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar imagen");
@@ -209,13 +237,19 @@ public class ControllerAnnadirLibro {
         }
     }
 
-
+    /*
+     * Metodo llamado desde otro controlador para asignar desde el otro un autor y hacer las operaciones correspondientes con el
+     *
+     * */
     public void recibirAutorSeleccionado(Autor autor) {
         this.autorSeleccionado = autor;
         nombreAutor.setText(autor.getNombre());
     }
 
-
+    /*
+     * Metodo asignado a un boton que abre una ventana nueva para añadir un autor
+     * Esta ventana se encarga de bloquear la pantalla actual para poder tener un control del programa mejor
+     * */
     public void annadirAutor(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaAutores.fxml"));

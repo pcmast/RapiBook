@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -27,15 +28,23 @@ import java.util.List;
 public class PantallaPrincipalUsuario {
 
 
-    public ListView<Libro> listaLibros;
+    @FXML
+    private ListView<Libro> listaLibros;
 
-    public TextField buscador;
-    public Label nombreUsuario;
-    public Label noEncontroLibro;
+    @FXML
+    private TextField buscador;
+    @FXML
+    private Label nombreUsuario;
+    @FXML
+    private Label noEncontroLibro;
 
     private ObservableList<Libro> libros = cargarLista();
 
-
+    /*
+    * Metodo que al inicializar el programa asigna todos los libros existentes en el sistema a un listView para
+    * mostrarselo al usuario
+    *
+    * */
     public void initialize() {
         nombreUsuario.setText(UsuarioActualController.getInstance().getUsuario().getNombre());
         List<Libro> lista = LibroDAO.todosLosLibros();
@@ -82,11 +91,17 @@ public class PantallaPrincipalUsuario {
         });
     }
 
+    //Metodo que carga la lista de los libros en el ObservableList
     public ObservableList<Libro> cargarLista() {
         List<Libro> libros = LibroDAO.todosLosLibros();
         return FXCollections.observableArrayList(libros);
     }
 
+    /*
+     * Metodo de filtro que muestra solamente los libros que sean gratuitos si no existen libros gratuitos el metodo
+     * muestra que no hay libros gratis
+     *
+     * */
     public void gratuitos(ActionEvent event) {
         List<Libro> lista = LibroDAO.todosLosLibros(); // Trae todos
         lista.removeIf(libro -> libro.getPrecio() > 0); // Solo los gratis
@@ -131,7 +146,10 @@ public class PantallaPrincipalUsuario {
             }
         });
     }
-
+    /*
+     * Metodo de filtro que muestra solamente los libros que sean de pago si no existen libros de pago el metodo
+     * muestra que no hay libros de pago "No se encontraron libros de pago"
+     * */
     public void dePago(ActionEvent event) {
         List<Libro> lista = LibroDAO.todosLosLibros(); // Trae todos
         lista.removeIf(libro -> libro.getPrecio() <= 0); // Solo los de pago
@@ -178,6 +196,10 @@ public class PantallaPrincipalUsuario {
     }
 
 
+    /*
+     * Metodo que abre la ventana login y cierra sesion del usuario actual es decir setea a null el UsuarioActual
+     *
+     * */
     public void cerrarSesion(MouseEvent mouseEvent) {
         UsuarioActualController.getInstance().setUsuario(null);
         try {
@@ -200,6 +222,10 @@ public class PantallaPrincipalUsuario {
 
     }
 
+    /*
+     * Metodo que busca un libro por sui titulo si no encuentra ninguno muestra un mensaje
+     *
+     * */
     public void buscarLibro(KeyEvent event) {
         TextField textField = (TextField) event.getSource();
         String filtro = textField.getText().toLowerCase();
@@ -224,6 +250,11 @@ public class PantallaPrincipalUsuario {
     }
 
 
+    /*
+    * Metodo que abre la ventana de pedir un prestamo al usuario
+    * Tiene comprobacion de todo por ejemplo si el usuario no selecciono ningun libro
+    *
+    * */
     public void pedirPrestamo(MouseEvent mouseEvent) {
         Libro libroSeleccionado = (Libro) listaLibros.getSelectionModel().getSelectedItem();
 
@@ -259,7 +290,7 @@ public class PantallaPrincipalUsuario {
         }
     }
 
-
+    //Metodo que abre otra ventana que muestra los prestamos de un usuario
     public void verPrestamos(MouseEvent mouseEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaVerPrestamo.fxml"));

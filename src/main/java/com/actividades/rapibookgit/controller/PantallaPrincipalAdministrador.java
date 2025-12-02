@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -31,12 +32,20 @@ import java.util.Optional;
 
 public class PantallaPrincipalAdministrador {
 
-    public ListView listaLibros;
-    public ImageView imagenReinicio;
-    public Label noEncontroLibro;
+    @FXML
+    private ListView listaLibros;
+    @FXML
+    private ImageView imagenReinicio;
+    @FXML
+    private Label noEncontroLibro;
     private ObservableList<Libro> libros;
     private Autor autorSeleccionado;
     private PantallaControllerAutores pantallaControllerAutores;
+
+    /*
+    * Metodo que al inicializar el programa carga la lista de todos los libros del sistema sin filtros en un listView
+    *
+    * */
     public void initialize() {
         File imagenURL = new File("images/reset.png");
         Image image = new Image(imagenURL.toURI().toString());
@@ -86,7 +95,11 @@ public class PantallaPrincipalAdministrador {
         });
     }
 
-
+    /*
+     * Metodo de filtro que muestra solamente los libros que sean gratuitos si no existen libros gratuitos el metodo
+     * muestra que no hay libros gratis
+     *
+     * */
     public void gratuitos(ActionEvent event) {
         List<Libro> lista = LibroDAO.todosLosLibros();
         lista.removeIf(libro -> libro.getPrecio() > 0);
@@ -133,6 +146,10 @@ public class PantallaPrincipalAdministrador {
         });
     }
 
+    /*
+     * Metodo de filtro que muestra solamente los libros que sean de pago si no existen libros de pago el metodo
+     * muestra que no hay libros de pago "No se encontraron libros de pago"
+     * */
     public void dePago(ActionEvent event) {
         List<Libro> lista = LibroDAO.todosLosLibros();
         lista.removeIf(libro -> libro.getPrecio() <= 0);
@@ -179,7 +196,11 @@ public class PantallaPrincipalAdministrador {
         });
     }
 
-
+    /*
+     * Metodo que abre una ventana nueva para añadir un libro a la base de datos el metodo bloquea esta ventana para
+     * mejorar el control
+     *
+     * */
     public void annadirLibro(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaAñadirLibro.fxml"));
@@ -203,6 +224,12 @@ public class PantallaPrincipalAdministrador {
 
     }
 
+
+    /*
+     * Metodo que crea una nueva ventana para actualizar un libro tiene control por si el usuario no selecciona un libro
+     * este metodo bloquea la pantalla actual para mejorar el control
+     *
+     * */
     public void actualizarLibro(ActionEvent event) {
         Libro libroSeleccionado = (Libro) listaLibros.getSelectionModel().getSelectedItem();
         if (libroSeleccionado == null) {
@@ -237,6 +264,11 @@ public class PantallaPrincipalAdministrador {
 
     }
 
+
+    /*
+     * Metodo que pregunta si se desea eliminar un libro tiene confirmacion y verificacion de si el usuario no a seleccionado un libro
+     * en caso que se desee eliminar el libro el programa lo elimina de la base de datos
+     * */
     public void eliminarLibro(ActionEvent event) {
         Libro libroSeleccionado = (Libro) listaLibros.getSelectionModel().getSelectedItem();
 
@@ -278,7 +310,10 @@ public class PantallaPrincipalAdministrador {
         }
     }
 
-
+    /*
+     * Metodo que abre la ventana login y cierra sesion del usuario actual es decir setea a null el UsuarioActual
+     *
+     * */
     public void cerrarSesion(MouseEvent mouseEvent) {
         UsuarioActualController.getInstance().setUsuario(null);
         try {
@@ -300,6 +335,10 @@ public class PantallaPrincipalAdministrador {
         }
     }
 
+    /*
+     * Metodo que reinicia la lista de todos los libros esto funciona si quieres quitar los filtros
+     *
+     * */
     public void reiniciarLista(MouseEvent mouseEvent) {
         List<Libro> lista = LibroDAO.todosLosLibros();
 
@@ -345,6 +384,12 @@ public class PantallaPrincipalAdministrador {
         });
     }
 
+
+    /*
+     * Metodo que abre una ventana nueva para poder añadir nuevos autores
+     * Este metodo bloquea la pantalla actual para controlar el programa
+     *
+     * */
     public void autores(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaAutores.fxml"));
@@ -367,6 +412,11 @@ public class PantallaPrincipalAdministrador {
         }
     }
 
+
+    /*
+     * Metodo que busca un libro por sui titulo si no encuentra ninguno muestra un mensaje
+     *
+     * */
     public void buscarLibro(KeyEvent event) {
         TextField textField = (TextField) event.getSource();
         String filtro = textField.getText().toLowerCase();
@@ -390,6 +440,10 @@ public class PantallaPrincipalAdministrador {
         listaLibros.setItems(FXCollections.observableArrayList(librosFiltrados));
     }
 
+    /*
+     * Metodo para controlar un autor es decir para poder eliminarlo añadirlo de un libro
+     *
+     * */
     public void controlarAutor(MouseEvent mouseEvent) {
         if (listaLibros.getSelectionModel().getSelectedItem() == null) {
             Alert alerta = new Alert(Alert.AlertType.WARNING);
@@ -426,6 +480,10 @@ public class PantallaPrincipalAdministrador {
         this.autorSeleccionado = autor;
     }
 
+    /*
+     * Metodo que al seleccionar un libro se puede ver los autores que tiene ese libro
+     * Tiene confirmacion y alerta por si el usuario no selecciona un libro
+     * */
     public void verAutores(MouseEvent mouseEvent) {
         if (listaLibros.getSelectionModel().getSelectedItem() == null) {
             Alert alerta = new Alert(Alert.AlertType.WARNING);

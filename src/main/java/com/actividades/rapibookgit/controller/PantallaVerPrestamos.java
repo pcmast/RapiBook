@@ -4,6 +4,7 @@ import com.actividades.rapibookgit.DAO.PrestamoDAO;
 import com.actividades.rapibookgit.model.Prestamo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
@@ -12,8 +13,10 @@ import java.util.List;
 public class PantallaVerPrestamos {
 
 
-    public ListView listaPrestamos;
-    public Label labelPrestamo;
+    @FXML
+    private ListView listaPrestamos;
+    @FXML
+    private Label labelPrestamo;
     private ObservableList<Prestamo> list = FXCollections.observableArrayList();;
 
     public void initialize() {

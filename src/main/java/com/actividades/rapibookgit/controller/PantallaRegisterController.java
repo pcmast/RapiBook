@@ -7,6 +7,7 @@ import com.actividades.rapibookgit.model.ClaveWrapper;
 import com.actividades.rapibookgit.model.Usuario;
 import com.actividades.rapibookgit.utilidades.Utilidades;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -25,14 +26,22 @@ import java.util.List;
 public class PantallaRegisterController {
 
 
-    public TextField nombre;
-    public TextField correo;
-    public PasswordField contrasena;
-    public PasswordField repetirContra;
-    public ImageView logo;
-    public TextField administrador;
-    public Label vacios;
-    public Label claveAdmin;
+    @FXML
+    private TextField nombre;
+    @FXML
+    private TextField correo;
+    @FXML
+    private PasswordField contrasena;
+    @FXML
+    private PasswordField repetirContra;
+    @FXML
+    private ImageView logo;
+    @FXML
+    private TextField administrador;
+    @FXML
+    private Label vacios;
+    @FXML
+    private Label claveAdmin;
 
     public void initialize() {
         File imagenURL = new File("images/libro1.png");
@@ -40,7 +49,12 @@ public class PantallaRegisterController {
         logo.setImage(image);
     }
 
-
+    /*
+    * Metodo que recoge los datos introducidos por el usuario y comprueba si estan correctos o si a dejado
+    * alguno vacio en el caso que este correcto registra ese mismo usuario en la base de datos
+    * Comprueba mediante validacion en correo y hashea la contraseña
+    * En caso que el usuario se haya registrado abre la ventana de inicio sesion
+    * */
     public void registrarse(ActionEvent actionEvent) {
         String nombre = this.nombre.getText();
         String correo = this.correo.getText();
@@ -120,6 +134,7 @@ public class PantallaRegisterController {
 
     }
 
+    //Metodo que vuelve a la ventana de inicio de sesión
     public void iniciaSesion(MouseEvent mouseEvent) {
         Stage currentStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         currentStage.close();

@@ -7,6 +7,7 @@ import com.actividades.rapibookgit.model.Libro;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,19 +23,29 @@ import java.util.Optional;
 public class PantallaControllerAutores {
 
 
-    public ListView listaAutores;
-    public ImageView reiniciarLista;
-    public Button botonSeleccionar;
-    public Button botonCrearAutor;
-    public Button btnEliminarAutor;
-    public Button botonSeleccionarDeUnLibro;
-    public Button btnEliminarAutorDeUnLibro;
+    @FXML
+    private ListView listaAutores;
+    @FXML
+    private ImageView reiniciarLista;
+    @FXML
+    private Button botonSeleccionar;
+    @FXML
+    private Button botonCrearAutor;
+    @FXML
+    private Button btnEliminarAutor;
+    @FXML
+    private Button botonSeleccionarDeUnLibro;
+    @FXML
+    private Button btnEliminarAutorDeUnLibro;
     private ObservableList<Autor> list;
     private ControllerAnnadirLibro controllerAnnadirLibro;
     private PantallaPrincipalAdministrador pantallaPrincipalAdministrador;
     private Libro libro;
 
-
+    /*
+    * Metodo que al inicializar la pantalla carga las listas de autores y desabilita los botones que no hacen falta
+    * desde el principio
+    * */
     public void initialize() {
         list = FXCollections.observableArrayList();
         list.addAll(AutorDAO.todosLosAutores());
@@ -50,10 +61,17 @@ public class PantallaControllerAutores {
         reiniciarLista.setImage(image);
     }
 
+    /*
+    * Metodo que coge el controlador de annadirLibro y lo asigna a uno que esta en esta clase
+    * llamado desde otro controlador
+    * */
     public void setControllerAnnadirLibro(ControllerAnnadirLibro controller) {
         this.controllerAnnadirLibro = controller;
     }
 
+    /*
+     * Metodo que recoge un libro y habilita los botones correspondientes para eliminar o annadir un autor a un libro
+     * */
     public void listaAutoresParaAnnadirOEliminar(Libro libro){
         this.libro = libro;
         botonSeleccionar.setDisable(true);
@@ -68,6 +86,9 @@ public class PantallaControllerAutores {
         btnEliminarAutorDeUnLibro.setDisable(false);
     }
 
+    /*
+     * Metodo que metodo que muestra los autores de un libro en concreto utilizando su ISBN
+     * */
     public void listaDeUnLibro(Libro libro){
         List<String> listaAutor = LibroAutorDAO.obtenerAutorPorISBN(libro.getISBN());
         List<Autor> listaAutorEntera = AutorDAO.todosLosAutores();
@@ -91,6 +112,9 @@ public class PantallaControllerAutores {
     }
 
 
+    /*
+     * Metodo que pregunta si quieres eliminar un autor si afirmas lo borra de la base de datos
+     * */
     public void eliminarAutor(MouseEvent mouseEvent) {
         if (listaAutores.getSelectionModel().getSelectedItem() == null) {
             Alert alerta = new Alert(Alert.AlertType.WARNING);
@@ -121,7 +145,9 @@ public class PantallaControllerAutores {
 
     }
 
-
+    /*
+     * Metodo que pide al usuario datos de un autor para registrarlo en la base de datos tanto el nombre y una biografia
+     * */
     public void crearAutor(ActionEvent event) {
         TextInputDialog dialogNombre = new TextInputDialog();
         dialogNombre.setTitle("Nuevo Autor");
@@ -155,6 +181,10 @@ public class PantallaControllerAutores {
         });
     }
 
+
+    /*
+     * Metodo que resetea la lista con todos los autores
+     * */
     public void reiniciar(MouseEvent mouseEvent) {
         list.clear();
         list.addAll(AutorDAO.todosLosAutores());
@@ -162,6 +192,10 @@ public class PantallaControllerAutores {
 
     }
 
+    /*
+     * Metodo que inicializa los botones para seleccionar crear y eliminar un autor
+     * Se llama desde otro controlador
+     * */
     public void inicializarBotones() {
         botonSeleccionar.setDisable(false);
         botonSeleccionar.setVisible(true);
@@ -171,6 +205,9 @@ public class PantallaControllerAutores {
         btnEliminarAutor.setVisible(false);
     }
 
+    /*
+     * Metodo que selecciona un autor de la lista y se lo pasa a otro controlador para añadirlo
+     * */
     public void SeleccionarAutor(ActionEvent event) {
         Autor autorSeleccionado = (Autor) listaAutores.getSelectionModel().getSelectedItem();
         if (autorSeleccionado != null) {
@@ -183,7 +220,10 @@ public class PantallaControllerAutores {
         }
     }
 
-
+    /*
+     * Metodo que que añade un autor a un libro determinado por si un libro tiene varios autores
+     * Tiene validacion y pide confirmacion para todo
+     * */
     public void SeleccionarAutorDeUnLibro(ActionEvent event) {
         Autor seleccionado = (Autor) listaAutores.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {
@@ -215,6 +255,11 @@ public class PantallaControllerAutores {
         stage.close();
     }
 
+
+    /*
+     * Metodo que elimina un autor de un libro tiene autores
+     * Tiene validacion y pide confirmacion para todo
+     * */
     public void eliminarAutorDeUnLibro(MouseEvent mouseEvent){
         Autor seleccionado = (Autor) listaAutores.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {

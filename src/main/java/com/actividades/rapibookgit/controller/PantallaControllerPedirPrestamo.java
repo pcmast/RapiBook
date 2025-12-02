@@ -5,6 +5,7 @@ import com.actividades.rapibookgit.model.Libro;
 import com.actividades.rapibookgit.model.Prestamo;
 import com.actividades.rapibookgit.model.Usuario;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -18,18 +19,30 @@ import java.util.Date;
 import java.util.List;
 
 public class PantallaControllerPedirPrestamo {
-    public ImageView imagenPortada;
-    public Label Titulo;
-    public Label anno;
-    public Label editorial;
-    public Label precio;
-    public DatePicker fechaPrestamo;
+    @FXML
+    private ImageView imagenPortada;
+    @FXML
+    private Label Titulo;
+    @FXML
+    private Label anno;
+    @FXML
+    private Label editorial;
+    @FXML
+    private Label precio;
+    @FXML
+    private DatePicker fechaPrestamo;
     private Libro libroSeleccionado;
+
 
     public void initialize(){
 
 
     }
+
+    /*
+    * Metodo que asigna al libro de esta clase los datos seleccionados desde otro metodo
+    *
+    * */
     public void setLibro(Libro libro) {
         this.libroSeleccionado = libro;
 
@@ -44,7 +57,10 @@ public class PantallaControllerPedirPrestamo {
     }
 
 
-
+    /*
+    * Metodo que registra un prestamo con el usuario y el libro que se selecciono desde otro controlador y la fecha
+    * tanto la fecha del prestamo como la fecha de devolucion del mismo
+    * */
     public void pedirPrestamo(ActionEvent event) {
 
         if (fechaPrestamo.getValue() == null) {

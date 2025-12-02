@@ -21,15 +21,23 @@ import java.io.IOException;
 import java.util.List;
 
 public class PantallaLoginController {
-    public RadioButton h2;
-    public RadioButton mysql;
+    @FXML
+    private RadioButton h2;
+    @FXML
+    private RadioButton mysql;
     @FXML
     private ImageView logo;
-    public TextField correo;
-    public PasswordField contrasena;
-    public Label error;
+    @FXML
+    private TextField correo;
+    @FXML
+    private PasswordField contrasena;
+    @FXML
+    private Label error;
 
-
+    /*
+    * Metodo que al inicializar la pantalla carga una imagen y carga un ToogleGroup con las bases de datos
+    * que se usan en este proyecto
+    * */
     public void initialize(){
         File imagenURL = new File("images/libro1.png");
         Image image = new Image(imagenURL.toURI().toString());
@@ -68,6 +76,11 @@ public class PantallaLoginController {
 
     }
 
+    /*
+    * Metodo que comprueba de la base de datos el usuario que se a introducido si existe inicia dependiendo si es
+    * administrador o usuario normal
+    *
+    * */
     public void inicioSesion(ActionEvent event) {
         String email = correo.getText();
         String password = contrasena.getText();
@@ -89,7 +102,7 @@ public class PantallaLoginController {
 
 
     }
-
+    // Metodo que inicia sesion como administrador crea una ventana de administrador
     public void iniciarSesionAdministrador(ActionEvent event){
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaPrincipalAdministrador.fxml"));
@@ -108,7 +121,7 @@ public class PantallaLoginController {
         }
 
     }
-
+    //Metodo que inicia sesion como usuario normal sin privilegios
     public void iniciarSesionUsuario(ActionEvent event){
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("pantallaPrincipalUsuario.fxml"));
@@ -127,12 +140,12 @@ public class PantallaLoginController {
         }
     }
 
-
+    //Metodo que asigna la base de datos a H2
     public void usarH2(ActionEvent event) {
         ConnectionSelector.useH2();
 
     }
-
+    //Metodo que asigna la base de datos a usar con MySql con phpMyadmin
     public void usarMySQL(ActionEvent event) {
         ConnectionSelector.useMySQL();
 
