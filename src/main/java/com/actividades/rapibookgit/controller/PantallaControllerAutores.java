@@ -222,7 +222,7 @@ public class PantallaControllerAutores {
 
     /*
      * Metodo que que añade un autor a un libro determinado por si un libro tiene varios autores
-     * Tiene validacion y pide confirmacion para todo
+     * Tiene validacion y pide confirmacion
      * */
     public void SeleccionarAutorDeUnLibro(ActionEvent event) {
         Autor seleccionado = (Autor) listaAutores.getSelectionModel().getSelectedItem();
@@ -258,7 +258,7 @@ public class PantallaControllerAutores {
 
     /*
      * Metodo que elimina un autor de un libro tiene autores
-     * Tiene validacion y pide confirmacion para todo
+     * Tiene validacion y pide confirmacion
      * */
     public void eliminarAutorDeUnLibro(MouseEvent mouseEvent){
         Autor seleccionado = (Autor) listaAutores.getSelectionModel().getSelectedItem();

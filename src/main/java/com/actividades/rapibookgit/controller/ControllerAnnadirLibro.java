@@ -127,7 +127,7 @@ public class ControllerAnnadirLibro {
 
     /*
      * Metodo que añade un libro con todos sus datos y un autor y luego se encarga de registrarlo en la base de datos
-     * Tiene comprobaciones de todo tipo por si no se escriben datos.
+     * Tiene comprobaciones como por si no se escriben datos.
      * Al añadir un libro cierra esta ventana
      * */
     public void annadirLibro(MouseEvent mouseEvent) {

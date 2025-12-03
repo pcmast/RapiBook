@@ -252,7 +252,7 @@ public class PantallaPrincipalUsuario {
 
     /*
     * Metodo que abre la ventana de pedir un prestamo al usuario
-    * Tiene comprobacion de todo por ejemplo si el usuario no selecciono ningun libro
+    * Tiene comprobacion de por ejemplo si el usuario no selecciono ningun libro
     *
     * */
     public void pedirPrestamo(MouseEvent mouseEvent) {
